@@ -9,10 +9,10 @@ export default class ContentApi {
   constructor(frontasticContext: Context, locale?: string) {
     this.locale = (locale ?? frontasticContext.project.defaultLocale).replace('_', '-');
 
-    const api_key = frontasticContext.project.configuration.contentstack.apiKey;
-    const delivery_token = frontasticContext.project.configuration.contentstack.deliveryToken;
-    const environment_name = frontasticContext.project.configuration.contentstack.environment;
-    const region = frontasticContext.project.configuration.contentstack.region;
+    const api_key = frontasticContext.project.configuration?.contentstack.apiKey;
+    const delivery_token = frontasticContext.project.configuration?.contentstack.deliveryToken;
+    const environment_name = frontasticContext.project.configuration?.contentstack.environment;
+    const region = frontasticContext.project.configuration?.contentstack.region;
 
     // Initialize the Contentstack Stack
     this.stack = Contentstack.Stack(api_key, delivery_token, environment_name, region);
