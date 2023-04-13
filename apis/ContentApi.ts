@@ -19,8 +19,6 @@ export default class ContentApi {
   }
 
   async getContent({contentTypeUid, entryUid}: any) {
-    contentTypeUid = 'testcontent';
-    entryUid = 'bltbe0c314cf4e8389d';
 
     const Query = this.stack.ContentType(contentTypeUid).Entry(entryUid);
 
@@ -28,7 +26,6 @@ export default class ContentApi {
 
     return await Query.fetch()
       .then(function success(entry) {
-        // return entry;
         return ContentMapper.contentstackEntryToContent(entry);
       }, function error(err) {
         console.log('Failed to fetch ContentStack entry, Error log: '+ err)
@@ -37,7 +34,6 @@ export default class ContentApi {
   }
 
   async getContentList({contentTypeUid, limit}: any) {
-    contentTypeUid = 'testcontent';
     const Query = this.stack.ContentType(contentTypeUid).Query();
     Query.limit(limit)
 
