@@ -1,4 +1,4 @@
-import { ActionContext, Request, Response } from '@frontastic/extension-types/src/ts/index';
+import { ActionContext, Request, Response } from '@frontastic/extension-types';
 import { getLocale } from '../utils/Request';
 import ContentApi from '../apis/ContentApi';
 
