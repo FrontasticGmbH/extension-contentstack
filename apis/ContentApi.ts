@@ -11,25 +11,42 @@ export default class ContentApi {
 
     const api_key = frontasticContext.project.configuration.contentstack.apiKey;
     const delivery_token = frontasticContext.project.configuration.contentstack.deliveryToken;
-    const environment_name = frontasticContext.project.configuration.contentstack.environmentName;
+    const environment_name = frontasticContext.project.configuration.contentstack.environment;
+    const region = frontasticContext.project.configuration.contentstack.region;
 
     // Initialize the Contentstack Stack
-    this.stack = Contentstack.Stack(api_key, delivery_token, environment_name);
-
+    this.stack = Contentstack.Stack(api_key, delivery_token, environment_name, region);
   }
 
-  async getContent() {
+  async getContent({contentTypeUid, entryUid}: any) {
+    contentTypeUid = 'testcontent';
+    entryUid = 'bltbe0c314cf4e8389d';
 
-    const Query = this.stack.ContentType('testcontent').Entry("bltbe0c314cf4e8389d");
-    let response = null;
-    Query.fetch()
+    const Query = this.stack.ContentType(contentTypeUid).Entry(entryUid);
+
+    Query.addParam('include_metadata', 'true')
+
+    return await Query.fetch()
       .then(function success(entry) {
-        console.log(entry.get('title')); // Retrieve field value by providing a field's uid
-        response = entry
+        // return entry;
+        return ContentMapper.contentstackEntryToContent(entry);
       }, function error(err) {
-        // err object
+        console.log('Failed to fetch ContentStack entry, Error log: '+ err)
+        return { err }
       });
+  }
 
-    return ContentMapper.contentstackEntryToContent();
+  async getContentList({contentTypeUid, limit}: any) {
+    contentTypeUid = 'testcontent';
+    const Query = this.stack.ContentType(contentTypeUid).Query();
+    Query.limit(limit)
+
+    return await Query.fetch()
+      .then(function success(entries) {
+        return entries.map((entry : any) => ContentMapper.contentstackEntryToContent(entry));
+      }, function error(err) {
+        console.log('Failed to fetch ContentStack entries, Error log: '+ err)
+        return { err }
+      });
   }
 }

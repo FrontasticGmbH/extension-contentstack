@@ -1,12 +1,14 @@
-import {Content} from "@Types/content/Content";
+import {ContentstackEntry} from "@Types/content/ContentstackEntry";
 
 export class ContentMapper {
 
-  static contentstackEntryToContent(): Content {
+  static contentstackEntryToContent(response: any ): unknown {
 
-    return {
-      contentId: "",
-      contentTypeId: ""
-    };
+    console.log("Mapper: " + JSON.stringify(response));
+
+    response = JSON.parse(JSON.stringify(response))
+    delete response._version
+
+    return response;
   }
 }
