@@ -17,10 +17,10 @@ export default {
     'contentstack/content-list': async (config, context) => {
       const contentApi = new ContentApi(context.frontasticContext as Context, getLocale(context.request));
 
-      const { contentType, limit } = config.configuration;
+      const { contentTypeUid, limit } = config.configuration;
 
       const payload = await contentApi.getContentList({
-        contentType,
+        contentTypeUid,
         limit,
       });
 

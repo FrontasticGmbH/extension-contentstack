@@ -19,3 +19,19 @@ export const getContent: ActionHook = async (request: Request, actionContext: Ac
 
   return response;
 };
+
+export const getContentList: ActionHook = async (request: Request, actionContext: ActionContext) => {
+  const contentApi = new ContentApi(actionContext.frontasticContext, getLocale(request));
+  const contentTypeUid = request.query.contentTypeUid;
+  const limit = request.query.limit;
+
+  const data = await contentApi.getContentList({ contentTypeUid, limit });
+
+  const response: Response = {
+    statusCode: 200,
+    body: JSON.stringify(data),
+    sessionData: request.sessionData,
+  };
+
+  return response;
+};

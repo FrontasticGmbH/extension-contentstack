@@ -19,10 +19,7 @@ export default class ContentApi {
   }
 
   async getContent({contentTypeUid, entryUid}: any) {
-
     const Query = this.stack.ContentType(contentTypeUid).Entry(entryUid);
-
-    Query.addParam('include_metadata', 'true')
 
     return await Query.fetch()
       .then(function success(entry) {
@@ -35,9 +32,9 @@ export default class ContentApi {
 
   async getContentList({contentTypeUid, limit}: any) {
     const Query = this.stack.ContentType(contentTypeUid).Query();
-    Query.limit(limit)
 
-    return await Query.fetch()
+    const dataQuery = Query.limit(parseInt(limit)).find();
+    return await dataQuery
       .then(function success(entries) {
         return entries.map((entry : any) => ContentMapper.contentstackEntryToContent(entry));
       }, function error(err) {
