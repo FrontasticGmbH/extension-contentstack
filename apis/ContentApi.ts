@@ -31,12 +31,11 @@ export default class ContentApi {
   }
 
   async getContentList({contentTypeUid, limit}: any) {
-    const Query = this.stack.ContentType(contentTypeUid).Query();
-
-    const dataQuery = Query.limit(parseInt(limit)).find();
-    return await dataQuery
+    const dataQuery = this.stack.ContentType(contentTypeUid).Query();
+    const Query = dataQuery.limit(parseInt(limit)).find();
+    return await Query
       .then(function success(entries) {
-        return entries.map((entry : any) => ContentMapper.contentstackEntryToContent(entry));
+        return entries[0].map((entry: any) => ContentMapper.contentstackEntryToContent(entry));
       }, function error(err) {
         console.log('Failed to fetch ContentStack entries, Error log: '+ err)
         return { err }

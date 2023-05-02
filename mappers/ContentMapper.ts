@@ -16,7 +16,7 @@ export class ContentMapper {
       title: response.title,
       contentId: response.uid,
       contentTypeId: response.contentTypeUid,
-      banner: response.featured_image.url,
+      banner: response.featured_image?.url,
       summary: response.multi_line
     };
   }
