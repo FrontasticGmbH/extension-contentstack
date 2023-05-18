@@ -11,7 +11,7 @@ export default {
       const { contentTypeUid, entryUid } = config.configuration;
 
       return {
-        dataSourcePayload: await contentApi.getContent({contentTypeUid, entryUid}),
+        dataSourcePayload: await contentApi.getContent({ contentTypeUid, entryUid }),
       };
     },
     'contentstack/content-list': async (config, context) => {
@@ -27,7 +27,7 @@ export default {
       return {
         dataSourcePayload: payload,
       };
-    }
+    },
   },
   actions: {
     contentstack: ContentActions,

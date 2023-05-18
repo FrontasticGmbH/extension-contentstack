@@ -1,9 +1,7 @@
-import {Content} from "@Types/content/Content";
+import { Content } from '@Types/content/Content';
 
 export class ContentMapper {
-
-  static contentstackEntryToContent(response: any ): Content {
-
+  static contentstackEntryToContent(response: any): Content {
     response = JSON.parse(JSON.stringify(response));
     delete response._version;
     delete response.created_at;
@@ -17,7 +15,7 @@ export class ContentMapper {
       contentId: response.uid,
       contentTypeId: response.contentTypeUid,
       banner: response.featured_image?.url,
-      summary: response.multi_line
+      summary: response.multi_line,
     };
   }
 }
