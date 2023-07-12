@@ -5,14 +5,14 @@ import ContentApi from '../apis/ContentApi';
 type ActionHook = (request: Request, actionContext: ActionContext) => Promise<Response>;
 
 export const getContent: ActionHook = async (request: Request, actionContext: ActionContext) => {
-
-  if (!request.query.contentTypeUid) {
+  const { entryUid, contentTypeUid } = request.query;
+  if (!contentTypeUid) {
     return {
       body: 'Missing contentTypeUid',
       statusCode: 400,
     };
   }
-  if (!request.query.entryUid) {
+  if (!entryUid) {
     return {
       body: 'Missing entryUid',
       statusCode: 400,
@@ -20,8 +20,6 @@ export const getContent: ActionHook = async (request: Request, actionContext: Ac
   }
 
   const contentApi = new ContentApi(actionContext.frontasticContext, getLocale(request));
-  const { entryUid, contentTypeUid } = request.query;
-
   const data = await contentApi.getContent({ contentTypeUid, entryUid });
 
   const response: Response = {
@@ -34,7 +32,8 @@ export const getContent: ActionHook = async (request: Request, actionContext: Ac
 };
 
 export const getContentList: ActionHook = async (request: Request, actionContext: ActionContext) => {
-  if (!request.query.contentTypeUid) {
+  const { limit, contentTypeUid } = request.query;
+  if (!contentTypeUid) {
     return {
       body: 'Missing contentTypeUid',
       statusCode: 400,
@@ -42,8 +41,6 @@ export const getContentList: ActionHook = async (request: Request, actionContext
   }
 
   const contentApi = new ContentApi(actionContext.frontasticContext, getLocale(request));
-  const { limit, contentTypeUid } = request.query;
-
   const data = await contentApi.getContentList({ contentTypeUid, limit });
 
   const response: Response = {
