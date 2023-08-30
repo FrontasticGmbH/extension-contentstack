@@ -1,6 +1,7 @@
 import { Context } from '@frontastic/extension-types';
 import * as Contentstack from 'contentstack';
 import { ContentMapper } from '../mappers/ContentMapper';
+import { getFromProjectConfig } from '@Content-contentful/utils/Context';
 
 export default class ContentApi {
   private stack: Contentstack.Stack;
@@ -9,7 +10,26 @@ export default class ContentApi {
   constructor(frontasticContext: Context, locale?: string) {
     this.locale = (locale ?? frontasticContext.project.defaultLocale).replace('_', '-');
 
-    const { apiKey, deliveryToken, environment, region } = frontasticContext.project.configuration?.contentstack;
+    let apiKey = getFromProjectConfig('EXTENSION_CONTENTSTACK_API_KEY', frontasticContext);
+    let deliveryToken = getFromProjectConfig('EXTENSION_CONTENTSTACK_DELIVERY_TOKEN', frontasticContext);
+    let environment = getFromProjectConfig('EXTENSION_CONTENTSTACK_ENVIRONMENT', frontasticContext);
+    let region = getFromProjectConfig('EXTENSION_CONTENTSTACK_REGION', frontasticContext);
+
+    if (!apiKey) {
+      apiKey = frontasticContext.project.configuration?.contentstack?.apiKey;
+    }
+
+    if (!deliveryToken) {
+      deliveryToken = frontasticContext.project.configuration?.contentstack?.deliveryToken;
+    }
+
+    if (!environment) {
+      environment = frontasticContext.project.configuration?.contentstack?.environment;
+    }
+
+    if (!region) {
+      region = frontasticContext.project.configuration?.contentstack?.region;
+    }
 
     // Initialize the Contentstack Stack
     this.stack = Contentstack.Stack(apiKey, deliveryToken, environment, region);
